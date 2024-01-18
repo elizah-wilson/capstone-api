@@ -1,8 +1,9 @@
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
 // async function with await unravels the promises
 async function getQuote() {
   try {
     let response = await fetch("https://zenquotes.io/api/today/")
-
     let data = await response.json()
     return data[0].q
   }
