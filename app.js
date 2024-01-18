@@ -26,8 +26,9 @@ app.get("/daily-quote", async (req, res) => {
 app.put("/upload", awsFunctions.putSVG)
 
 
-
-
+// endpt for the feed wall, this would a get request, ideally I could get multiple objects form the aws bucket
+// those would be grabbed using the date - maybe their is a directory method that will filter that out for me?  
+app.get("/get-objects", awsFunctions.getObjects)
 
 app.listen(port, () => {
     console.log(`Express app listening on port ${port}`)
