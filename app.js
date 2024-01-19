@@ -7,7 +7,7 @@ require('dotenv').config()
 const queries = require('./queries.js')
 const fetch = require('./scripts/script.js')
 const awsFunctions = require('./scripts/aws.js')
-
+const tokenManager = require('./token-manager.js')
 
 app.use(cors()) 
 app.use(bodyParser.json())
@@ -15,6 +15,8 @@ app.use(bodyParser.json())
 app.get("/", (req, res) => {
     res.send("alive")
 })
+
+app.get("/login", queries.login)
 
 // endpoint for daily quote api
 app.get("/daily-quote", async (req, res) => {
