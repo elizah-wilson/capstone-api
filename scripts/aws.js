@@ -8,7 +8,7 @@ function currentDate() {
 }
 
 async function putSVG(req, res) {
-    userId = req.body.userId
+    userId = req.user
     svgInfo = req.body.svgInfo
 
     const s3Client = new S3Client({                   // instance of aws s3 client (allows us to interact w/ bucket)
@@ -23,6 +23,9 @@ async function putSVG(req, res) {
     try {
         await s3Client.send(new PutObjectCommand({
             Bucket: bucketName,
+            // Prefix: currentDate(),
+            // Key: `${userId}.svg`,
+            ContentType: "image/svg+xml",
             Key: `${currentDate()}/${userId}.svg`, // will create ending of the object url - include userid
             Body: svgInfo, //put the svg file from the browser 
         }));
@@ -46,6 +49,7 @@ const getObjects = async (req, res) => {
 
     const command = new ListObjectsV2Command({
         Bucket: "mysvgfiles",
+        Prefix: currentDate(),
         // The default and maximum number of keys returned is 1000. This limits it to
         // one for demonstration purposes.
         MaxKeys: 100,
