@@ -1,7 +1,7 @@
 // imports
 require('dotenv').config()
 const Pool = require('pg').Pool
-const tokenManager = require('./token-manager')
+const tokenManager = require('./token-manager.js')
 
 const pool = new Pool({     
     user: process.env.USER, 
@@ -10,10 +10,6 @@ const pool = new Pool({
     password: process.env.DATABASE,
     post: 5432
 })
-
-
-// aws cloud that stores the svg for the pages of the day 
-// pool query for username, call the fetch function for the prompt of the day, their response to prompt
 
 async function login(req, res) {
     const email = req.body.email
@@ -25,7 +21,6 @@ async function login(req, res) {
         }
         const token = tokenManager.generateAccessToken(results.rows[0].userid)
         res.status(200).json(token)
-
     })
 }
 

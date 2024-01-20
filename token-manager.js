@@ -1,8 +1,8 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
-function generateAccessToken(userId) {
-   return jwt.sign(userId, process.env.TOKEN_SECRET, {}) 
+function generateAccessToken(userid) {
+   return jwt.sign(userid, process.env.TOKEN_SECRET, {}) 
 }
 
 // middleware function to use on all endpts except login (which will create token) so that only authorized users can do things in the app

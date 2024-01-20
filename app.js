@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
     res.send("alive")
 })
 
-app.get("/login", queries.login)
+app.post("/login", queries.login)
 
 // endpoint for daily quote api
 app.get("/daily-quote", async (req, res) => {
