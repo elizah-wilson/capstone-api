@@ -25,10 +25,18 @@ app.get("/daily-quote", async (req, res) => {
 })
 
 //endpt for putting objects into s3 bucket
-app.put("/upload", tokenManager.authenticateToken, awsFunctions.putSVG)
+// used put since aws sdk uses that method and if post doesnt exist, should default to postx
+app.put("/upload", tokenManager.authenticateToken, awsFunctions.putSVG, queries.createPost)
  
+// gets information needed for posts from our users and posts dbs
+app.get("/get-posts", tokenManager.authenticateToken, queries.getPosts)
 
-app.get("/get-objects", awsFunctions.getObjects)
+
+app.get("/like/:postid", queries.likePost)
+
+
+
+
 
 app.listen(port, () => {
     console.log(`Express app listening on port ${port}`)
