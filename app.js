@@ -32,7 +32,7 @@ app.put("/upload", tokenManager.authenticateToken, awsFunctions.putSVG, queries.
 app.get("/get-posts", tokenManager.authenticateToken, queries.getPosts)
 
 
-app.get("/like/:postid", queries.likePost)
+app.put("/like-post", tokenManager.authenticateToken, queries.likePost)
 
 
 

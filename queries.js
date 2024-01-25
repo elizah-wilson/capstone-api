@@ -36,8 +36,9 @@ async function createPost(req, res) {
     const prompt = req.body.prompt
     const page = `${process.env.BASEURL}/${currentDate()}/${userid}.svg`
     const date = currentDate()
+    const likes = 0
     
-    await pool.query('INSERT INTO posts (userid, page, prompt, response, date) VALUES ($1, $2, $3, $4, $5)', [userid, page, prompt, response, date], (error, results) => {
+    await pool.query('INSERT INTO posts (userid, page, prompt, response, date, likes) VALUES ($1, $2, $3, $4, $5, $6)', [userid, page, prompt, response, date, likes], (error, results) => {
         if(error) {
             throw error
         }
@@ -48,7 +49,7 @@ async function createPost(req, res) {
 
 // get username from users table, which is related to posts table using userid foreign key
 async function getPosts(req, res) {
-    pool.query('SELECT posts.prompt, posts.response, posts.page, posts.likes, posts.date, users.username FROM posts LEFT JOIN users ON posts.userid = users.userid WHERE posts.date = $1', [currentDate()], (error, results) => {
+    pool.query('SELECT posts.postid, posts.prompt, posts.response, posts.page, posts.likes, posts.date, users.username FROM posts LEFT JOIN users ON posts.userid = users.userid WHERE posts.date = $1', [currentDate()], (error, results) => {
         if(error) {
             throw error
         }
@@ -57,8 +58,14 @@ async function getPosts(req, res) {
 }
 
 async function likePost(req, res) {
-    const postId = req.params.postid
-    
+    const postId = req.body.postId
+    // added returning clause 
+    pool.query('UPDATE posts SET likes = likes + 1 WHERE postid = $1 RETURNING *', [postId], (error, results) => {
+        if(error) {
+            throw error
+        }
+        res.status(200).json(results.rows)
+    })
 }
 
 module.exports = {
