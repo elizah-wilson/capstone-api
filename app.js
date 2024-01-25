@@ -18,14 +18,11 @@ app.get("/", (req, res) => {
 
 app.post("/login", queries.login)
 
-// endpoint for daily quote api
 app.get("/daily-quote", async (req, res) => {
     const quote = await fetch.getQuote()
     res.send(quote)
 })
 
-//endpt for putting objects into s3 bucket
-// used put since aws sdk uses that method and if post doesnt exist, should default to postx
 app.put("/upload", tokenManager.authenticateToken, awsFunctions.putSVG, queries.createPost)
  
 // gets information needed for posts from our users and posts dbs
@@ -33,8 +30,6 @@ app.get("/get-posts", tokenManager.authenticateToken, queries.getPosts)
 
 
 app.put("/like-post", tokenManager.authenticateToken, queries.likePost)
-
-
 
 
 
